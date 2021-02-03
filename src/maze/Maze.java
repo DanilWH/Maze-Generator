@@ -1,40 +1,30 @@
-package interfaces;
+package maze;
 
-import java.awt.*;
 import java.util.Random;
 
-class Point {
-    public int x;
-    public int y;
-}
+public class Maze {
 
-public class Main {
+    public static final int SZW = 7; // the size of the maze (width)
+    public static final int SZH = 7; // the size of the maze (height)
 
-    private static final int SZW = 80; // the size of the maze (width)
-    private static final int SZH = 80; // the size of the maze (height)
+    public static int todonum;
+    public static int[][] maze = new int[SZW][SZH];
+    public static Point[] todo = new Point[SZW * SZH];
+    public static int[] dx = new int[4];
+    public static int[] dy = new int[4];
 
-    private static int todonum = 0;
-    private static int[][] maze = new int[SZW][SZH];
-    private static Point[] todo = new Point[SZW * SZH];
-    private static int[] dx = new int[4];
-    private static int[] dy = new int[4];
+    private static final Random random = new Random(0);
 
-    private static final Random random = new Random();
-
+    /*
     public static void main(String[] args) {
         for (int i = 0; i < SZW * SZH; i++) {
             todo[i] = new Point();
         }
 
         setup();
-        for (int i = 0; i < SZW; i++) {
-            for (int j = 0; j < SZH; j++) {
-                System.out.print(maze[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println(intOf(Math.pow(2, 5)));
+        printArray(maze);
     }
+     */
 
     public static void setup() {
         int x, y, n, d;
@@ -51,14 +41,10 @@ public class Main {
             }
         }
 
-        /*
-        x = (int) (Math.random() * (SZW - 2)) + 1;
-        y = (int) (Math.random() * (SZH - 2)) + 1;
-         */
         x = random.nextInt(SZW - 2) + 1;
         y = random.nextInt(SZH - 2) + 1;
 
-        maze[x][y] = maze[x][y] & ~48;
+        maze[x][y] &= ~48;
 
         // put all the unprocessed cells into the "todo" list.
         for (d = 0; d < 4; d++) {
@@ -67,7 +53,7 @@ public class Main {
                 todo[todonum].y = y + dy[d];
                 todonum++;
 
-                maze[x + dx[d]][y + dy[d]] = maze[x + dx[d]][y + dy[d]] & ~16;
+                maze[x + dx[d]][y + dy[d]] &= ~16;
             }
         }
 
@@ -79,18 +65,17 @@ public class Main {
             y = todo[n].y;
 
             // remove the processed cell from the list.
-            todonum = todonum - 1;
-            todo[n] = todo[todonum];
+            todonum--;
+            todo[n] = new Point(todo[todonum].x, todo[todonum].y);
 
             // choose the direction that leads to the exit.
             do {
                 d = random.nextInt(4);
-                System.out.println(d);
             } while ((maze[x + dx[d]][y + dy[d]] & 32) != 0);
 
             // join the chosen cell to the maze.
-            maze[x][y] = maze[x][y] & ~(1 * (intOf(Math.pow(2, d))) | 32);
-            maze[x + dx[d]][y + dy[d]] = maze[x + dx[d]][y + dy[d]] & ~(1 * (intOf(Math.pow(2, d ^ 1))));
+            maze[x][y] &= ~(1 * (intOf(Math.pow(2, d))) | 32);
+            maze[x + dx[d]][y + dy[d]] &= ~(1 * (intOf(Math.pow(2, d ^ 1))));
 
             // put all the unprocessed cells into the todo list.
             for (d = 0; d < 4; d++) {
@@ -98,12 +83,12 @@ public class Main {
                     todo[todonum].x = x + dx[d];
                     todo[todonum].y = y + dy[d];
                     todonum++;
-                    maze[x + dx[d]][y + dy[d]] = maze[x + dx[d]][y + dy[d]] & ~16;
+                    maze[x + dx[d]][y + dy[d]] &= ~16;
                 }
             }
 
-            maze[1][1] = maze[1][1] & ~1; // the beginning of the maze is at the left-top corner.
-            maze[SZW - 2][SZH - 2] = maze[SZW - 2][SZH - 2] & ~2; // the end of the maze is at the right-bottom corner.
+            maze[1][1] &= ~1; // the beginning of the maze is at the left-top corner.
+            maze[SZW - 2][SZH - 2] &= ~2; // the end of the maze is at the right-bottom corner.
         }
     }
 
@@ -116,5 +101,15 @@ public class Main {
         String[] x_parts = String.valueOf(x).split("[.]");
 
         return Integer.parseInt(x_parts[0]);
+    }
+
+    public static void printArray(int[][] array) {
+        for (int i = 0; i < array.length; i++) {
+            for (int j = 0; j < array.length; j++) {
+                System.out.print(array[i][j] + " ");
+            }
+            System.out.println();
+        }
+        System.out.println();
     }
 }
