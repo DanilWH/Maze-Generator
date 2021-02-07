@@ -14,20 +14,14 @@ public class Maze {
     public static int[] dy = new int[4];
 
     private static final Random random = new Random(0);
+    private static int x, y, n, d;
 
-    /*
-    public static void main(String[] args) {
-        for (int i = 0; i < SZW * SZH; i++) {
+    public static void setup() {
+        // init the "todo" list.
+        for (int i = 0; i < Maze.SZW * Maze.SZH; i++) {
             todo[i] = new Point();
         }
 
-        setup();
-        printArray(maze);
-    }
-     */
-
-    public static void setup() {
-        int x, y, n, d;
         setDxDy();
 
         // set the borders.
@@ -57,39 +51,41 @@ public class Maze {
             }
         }
 
-        // while all the cells aren't processed
-        while (todonum > 0) {
-            // choose a random cell from the todo list.
-            n = random.nextInt(todonum);
-            x = todo[n].x;
-            y = todo[n].y;
+    }
 
-            // remove the processed cell from the list.
-            todonum--;
-            todo[n] = new Point(todo[todonum].x, todo[todonum].y);
+    public static void updateMaze() {
+        if (todonum <= 0) return;
 
-            // choose the direction that leads to the exit.
-            do {
-                d = random.nextInt(4);
-            } while ((maze[x + dx[d]][y + dy[d]] & 32) != 0);
+        // choose a random cell from the todo list.
+        n = random.nextInt(todonum);
+        x = todo[n].x;
+        y = todo[n].y;
 
-            // join the chosen cell to the maze.
-            maze[x][y] &= ~(1 * (intOf(Math.pow(2, d))) | 32);
-            maze[x + dx[d]][y + dy[d]] &= ~(1 * (intOf(Math.pow(2, d ^ 1))));
+        // remove the processed cell from the list.
+        todonum--;
+        todo[n] = new Point(todo[todonum].x, todo[todonum].y);
 
-            // put all the unprocessed cells into the todo list.
-            for (d = 0; d < 4; d++) {
-                if ((maze[x + dx[d]][y + dy[d]] & 16) != 0) {
-                    todo[todonum].x = x + dx[d];
-                    todo[todonum].y = y + dy[d];
-                    todonum++;
-                    maze[x + dx[d]][y + dy[d]] &= ~16;
-                }
+        // choose the direction that leads to the exit.
+        do {
+            d = random.nextInt(4);
+        } while ((maze[x + dx[d]][y + dy[d]] & 32) != 0);
+
+        // join the chosen cell to the maze.
+        maze[x][y] &= ~(1 * (intOf(Math.pow(2, d))) | 32);
+        maze[x + dx[d]][y + dy[d]] &= ~(1 * (intOf(Math.pow(2, d ^ 1))));
+
+        // put all the unprocessed cells into the todo list.
+        for (d = 0; d < 4; d++) {
+            if ((maze[x + dx[d]][y + dy[d]] & 16) != 0) {
+                todo[todonum].x = x + dx[d];
+                todo[todonum].y = y + dy[d];
+                todonum++;
+                maze[x + dx[d]][y + dy[d]] &= ~16;
             }
-
-            maze[1][1] &= ~1; // the beginning of the maze is at the left-top corner.
-            maze[SZW - 2][SZH - 2] &= ~2; // the end of the maze is at the right-bottom corner.
         }
+
+        maze[1][1] &= ~1; // the beginning of the maze is at the left-top corner.
+        maze[SZW - 2][SZH - 2] &= ~2; // the end of the maze is at the right-bottom corner.
     }
 
     public static void setDxDy() {
