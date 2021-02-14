@@ -4,21 +4,21 @@ import java.util.Random;
 
 public class Maze {
 
-    public static final int SZW = 7; // the size of the maze (width)
-    public static final int SZH = 7; // the size of the maze (height)
-
-    public static int todonum;
+    public static final int SZW = 80; // the size of the maze (width)
+    public static final int SZH = 80; // the size of the maze (height)
     public static int[][] maze = new int[SZW][SZH];
-    public static Point[] todo = new Point[SZW * SZH];
-    public static int[] dx = new int[4];
-    public static int[] dy = new int[4];
 
-    private static final Random random = new Random(0);
+    private static int todonum;
+    private static Point[] todo = new Point[SZW * SZH];
+    private static int[] dx = new int[4];
+    private static int[] dy = new int[4];
+
+    private static final Random random = new Random();
     private static int x, y, n, d;
 
     public static void setup() {
         // init the "todo" list.
-        for (int i = 0; i < Maze.SZW * Maze.SZH; i++) {
+        for (int i = 0; i < SZW * SZH; i++) {
             todo[i] = new Point();
         }
 
@@ -54,12 +54,19 @@ public class Maze {
     }
 
     public static void updateMaze() {
-        if (todonum <= 0) return;
+        if (todonum <= 0) {
+			Maze.x = 1;
+			Maze.y = 1;
+			return;
+		}
 
         // choose a random cell from the todo list.
         n = random.nextInt(todonum);
         x = todo[n].x;
         y = todo[n].y;
+		// System.out.println("n = " + n); TODO
+		// System.out.println("x = " + x); TODO
+		// System.out.println("y = " + y); TODO
 
         // remove the processed cell from the list.
         todonum--;
@@ -69,10 +76,14 @@ public class Maze {
         do {
             d = random.nextInt(4);
         } while ((maze[x + dx[d]][y + dy[d]] & 32) != 0);
+		// System.out.println("d = " + d); TODO
 
         // join the chosen cell to the maze.
         maze[x][y] &= ~(1 * (intOf(Math.pow(2, d))) | 32);
         maze[x + dx[d]][y + dy[d]] &= ~(1 * (intOf(Math.pow(2, d ^ 1))));
+		
+		// System.out.println("maze[x][y] = " + maze[x][y]); TODO
+        // System.out.println("maze[x + dx[d]][y + dy[d]] = " + maze[x + dx[d]][y + dy[d]]); TODO
 
         // put all the unprocessed cells into the todo list.
         for (d = 0; d < 4; d++) {
@@ -87,25 +98,35 @@ public class Maze {
         maze[1][1] &= ~1; // the beginning of the maze is at the left-top corner.
         maze[SZW - 2][SZH - 2] &= ~2; // the end of the maze is at the right-bottom corner.
     }
+	
+	public static int getTodonum() {
+		return todonum;
+	}
 
-    public static void setDxDy() {
+    public static int getX() {
+        return x;
+    }
+
+    public static int getY() {
+        return y;
+    }
+	
+	public static void setX(int x) {
+		Maze.x = x;
+	}
+	
+	public static void setY(int y) {
+		Maze.y = y;
+	}
+
+    private static void setDxDy() {
         dx[0] = 0; dx[1] = 0; dx[2] = -1; dx[3] = 1;
         dy[0] = -1; dy[1] = 1; dy[2] = 0; dy[3] = 0;
     }
 
-    public static int intOf(double x) {
+    private static int intOf(double x) {
         String[] x_parts = String.valueOf(x).split("[.]");
 
         return Integer.parseInt(x_parts[0]);
-    }
-
-    public static void printArray(int[][] array) {
-        for (int i = 0; i < array.length; i++) {
-            for (int j = 0; j < array.length; j++) {
-                System.out.print(array[i][j] + " ");
-            }
-            System.out.println();
-        }
-        System.out.println();
     }
 }
