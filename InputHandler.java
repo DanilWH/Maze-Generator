@@ -2,40 +2,36 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 class InputHandler implements KeyListener {
-
-	private Main main;
-	private Maze maze;
 	
-	public InputHandler(Main main, Maze maze) {
-		this.main = main;
+	private Maze maze;
+	private Walker walker;
+
+	public InputHandler(Maze maze, Walker walker) {
 		this.maze = maze;
+		this.walker = walker;
 	}
 
     @Override
     public void keyPressed(KeyEvent e) {
-		int x = this.maze.getXMaze();
-		int y = this.maze.getYMaze();
+		int x = this.walker.getXPos();
+		int y = this.walker.getYPos();
 		
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_UP:
 				// check the upper wall
-				if ((this.maze.maze[x][y] & 1) == 0) this.maze.setYMaze(--y);
+				if ((this.maze.maze[x][y] & 1) == 0) this.walker.setYPos(--y);
 				break;
 			case KeyEvent.VK_DOWN:
 				// check the lower wall
-				if ((this.maze.maze[x][y] & 2) == 0) this.maze.setYMaze(++y);
+				if ((this.maze.maze[x][y] & 2) == 0) this.walker.setYPos(++y);
 				break;
 			case KeyEvent.VK_LEFT:
 				// check the left wall
-				if ((this.maze.maze[x][y] & 4) == 0) this.maze.setXMaze(--x);
+				if ((this.maze.maze[x][y] & 4) == 0) this.walker.setXPos(--x);
 				break;
 			case KeyEvent.VK_RIGHT:
 				// check the right wall
-				if ((this.maze.maze[x][y] & 8) == 0) this.maze.setXMaze(++x);
-				break;
-				
-			case KeyEvent.VK_SPACE:
-				main.isActive = !main.isActive;
+				if ((this.maze.maze[x][y] & 8) == 0) this.walker.setXPos(++x);
 				break;
 		}
     }

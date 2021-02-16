@@ -1,4 +1,3 @@
-import java.awt.*;
 import javax.swing.JFrame;
 
 public class Main extends JFrame {
@@ -9,7 +8,6 @@ public class Main extends JFrame {
     	/*** Init the JFrame (window). ***/
         this.setTitle("test paint");
         this.setSize(1000, 1000);
-        //this.addKeyListener(new InputHandler(this, maze));
 
         this.setVisible(true);
     }
@@ -22,7 +20,7 @@ public class Main extends JFrame {
     	Maze maze = new Maze(main);
 
     	// create one walker.
-		// Walker walker = new Walker(maze);
+		Walker walker = new Walker(main, maze);
 
 
         // update the maze and redraw it on the panel.
@@ -33,7 +31,6 @@ public class Main extends JFrame {
 					try {
 						// update the maze.
 						maze.updateMaze();
-						//
 						// redraw the maze.
 						maze.drawMaze();
 
@@ -50,14 +47,12 @@ public class Main extends JFrame {
 				while(true) {
 					if (main.isActive) {
 						try {
+							walker.draw();
 							Thread.sleep(10); // delay
 						} catch (InterruptedException e) {
 							e.printStackTrace();
 						}
 					}
-					
-					// render the maze.
-					maze.drawMaze();
 				}
             }
         }).start();
