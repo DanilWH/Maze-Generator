@@ -1,13 +1,14 @@
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.BasicStroke;
 import java.util.Random;
 
 import javax.swing.JPanel;
 
 public class Maze extends JPanel {
-    public final int SZW = 80; // the size of the maze (width)
-    public final int SZH = 80; // the size of the maze (height)
+    public final int SZW = 30; // the size of the maze (width)
+    public final int SZH = 30; // the size of the maze (height)
     public int[][] maze = new int[SZW][SZH];
 
     private int todonum;
@@ -18,7 +19,8 @@ public class Maze extends JPanel {
     private final Random random = new Random();
     private int xMaze, yMaze, n, d;
 
-    private final int wall_len = 10;
+    private final int wall_len = 15;
+	private final float stroke = 2.0f;
 
     public Maze(Main main) {
         /*** Init the JPanel ***/
@@ -36,7 +38,7 @@ public class Maze extends JPanel {
         super.paintComponent(g);
         Graphics2D gr2d = (Graphics2D) g;
         gr2d.setPaint(Color.BLACK);
-        // gr2d.setStroke(new BasicStroke(2.0f));
+        gr2d.setStroke(new BasicStroke(this.stroke));
 
         for (int x = 0; x < this.SZH; x++) {
             for (int y = 0; y < this.SZW; y++) {
@@ -70,7 +72,7 @@ public class Maze extends JPanel {
                 // draw the red rect slider.
                 gr2d.setPaint(Color.RED);
                 gr2d.fillRect(this.getXMaze() * wall_len + 1, this.getYMaze() * this.wall_len + 1,
-                        this.wall_len - 1, this.wall_len - 1);
+                        this.wall_len - (int) this.stroke, this.wall_len - (int) this.stroke);
                 gr2d.setPaint(Color.BLACK);
             }
         }
@@ -135,8 +137,10 @@ public class Maze extends JPanel {
         // put all the unprocessed cells into the todo list.
         this.putCellsIntoTodo();
 
+        /*
         this.maze[1][1] &= ~1; // the beginning of the maze is at the left-top corner.
         this.maze[this.SZW - 2][this.SZH - 2] &= ~2; // the end of the maze is at the right-bottom corner.
+         */
     }
 
     public void drawMaze() {
@@ -166,6 +170,10 @@ public class Maze extends JPanel {
     public void setYMaze(int yMaze) {
         this.yMaze = yMaze;
     }
+	
+	public float getStroke() {
+		return this.stroke;
+	}
 
     private void setDxDy() {
         this.dx[0] = 0; this.dx[1] = 0; this.dx[2] = -1; this.dx[3] = 1;

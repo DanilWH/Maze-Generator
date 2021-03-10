@@ -1,3 +1,4 @@
+import javax.swing.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
@@ -15,7 +16,8 @@ class InputHandler implements KeyListener {
     public void keyPressed(KeyEvent e) {
 		int x = this.walker.getXPos();
 		int y = this.walker.getYPos();
-		
+
+
 		switch(e.getKeyCode()) {
 			case KeyEvent.VK_UP:
 				// check the upper wall
@@ -34,6 +36,17 @@ class InputHandler implements KeyListener {
 				if ((this.maze.maze[x][y] & 8) == 0) this.walker.setXPos(++x);
 				break;
 		}
+
+		if (x == maze.SZW - 2 && y == maze.SZH - 2) {
+/*
+			JFrame newFrame = new JFrame();
+			newFrame.setSize(30, 30);
+			newFrame.setVisible(true);
+*/
+			JOptionPane.showMessageDialog(null, "Что-то пошло не так!","Ошибка!", JOptionPane.ERROR_MESSAGE);
+			// JOptionPane.showMessageDialog(null, "Ура! Вы не отсталый!","Победа!", JOptionPane.INFORMATION_MESSAGE);
+		}
+
     }
 
     @Override

@@ -7,9 +7,10 @@ public class Main extends JFrame {
     public Main() {
     	/*** Init the JFrame (window). ***/
         this.setTitle("test paint");
-        this.setSize(1000, 1000);
+        this.setSize(800, 800);
 
         this.setVisible(true);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
     public static void main(String[] args) {
@@ -34,15 +35,15 @@ public class Main extends JFrame {
 						// redraw the maze.
 						maze.drawMaze();
 
-						Thread.sleep(1); // delay
+						Thread.sleep(0); // delay
 					} catch (InterruptedException e) {
 						e.printStackTrace();
 					}
                 }
 				
 				// put the slider in the up-left corner.
-				maze.setXMaze(1);
-				maze.setYMaze(1);
+				maze.setXMaze(maze.SZW - 2);
+				maze.setYMaze(maze.SZH - 2);
 				
 				while(true) {
 					if (main.isActive) {
