@@ -41,10 +41,6 @@ public class Main extends JFrame {
 					}
                 }
 				
-				// put the slider in the up-left corner.
-				maze.setXMaze(maze.SZW - 2);
-				maze.setYMaze(maze.SZH - 2);
-				
 				while(true) {
 					if (main.isActive) {
 						try {
