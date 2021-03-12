@@ -44,13 +44,9 @@ class InputHandler implements KeyListener {
 		}
 
 		if (x == this.maze.SZW - 2 && y == this.maze.SZH - 2) {
-/*
-			JFrame newFrame = new JFrame();
-			newFrame.setSize(30, 30);
-			newFrame.setVisible(true);
-*/
 			JOptionPane.showMessageDialog(null, "Что-то пошло не так!","Ошибка!", JOptionPane.ERROR_MESSAGE);
 			// JOptionPane.showMessageDialog(null, "Ура! Вы не отсталый!","Победа!", JOptionPane.INFORMATION_MESSAGE);
+			// JOptionPane.showMessageDialog(null, "Ура! Вы нашли выход!","Победа!", JOptionPane.INFORMATION_MESSAGE);
 			this.maze.drawMaze();
 		}
 
