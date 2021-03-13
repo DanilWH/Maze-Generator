@@ -3,7 +3,6 @@ import javax.swing.*;
 public class Main extends JFrame {
 
 	public boolean isActive = true;
-	private long endingTime;
 	private String title = "Test maze | %s : %s";
 
 	public Main() {
@@ -22,8 +21,14 @@ public class Main extends JFrame {
     	// create one maze.
     	Maze maze = new Maze(main);
 
+		// create the Control Panel.
+		ControlPanel controlPanel = new ControlPanel(main, maze, main.title);
+		controlPanel.addTimer();
+		controlPanel.timer().set(0, 2, 0);
+
     	// create one walker.
 		Walker walker = new Walker(main, maze);
+
 
 
         // update the maze and redraw it on the panel.
@@ -43,24 +48,24 @@ public class Main extends JFrame {
 					}
                 }
 
-                main.endingTime = System.currentTimeMillis() + 2 * 60 * 1000;
-				
+                // start the timer.
+                controlPanel.timer().start();
+
 				while(true) {
 					if (main.isActive) {
 						try {
-							long millisLeft = main.endingTime - System.currentTimeMillis();
 							// check if the time is out.
-							if (millisLeft <= 0) {
+							if (controlPanel.timer().timeIsUp()) {
 								JOptionPane.showMessageDialog(null, "Что-то пошло не так!","Ошибка!", JOptionPane.ERROR_MESSAGE);
 								maze.drawMaze();
 								main.isActive = false;
 							}
 
-							// show the time in the title bar.
-							long secLeft = millisLeft / 1000;
-							long minLeft = secLeft / 60;
+							controlPanel.timer().update();
 
-							main.setTitle(String.format(main.title, minLeft % 60, secLeft % 60));
+							main.setTitle(String.format(main.title,
+									controlPanel.timer().getMinutes(),
+									controlPanel.timer().getSeconds()));
 
 							// redraw the walker.
 							walker.draw();
