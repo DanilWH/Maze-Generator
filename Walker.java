@@ -16,7 +16,7 @@ class Walker extends JPanel {
 		main.add(this);
 		main.addKeyListener(new InputHandler(maze, this));
 
-		this.setBounds(0, 0, maze.SZW * maze.getWallLen(), maze.SZH * maze.getWallLen());
+		this.setBounds(0, 0, maze.getWidth(), maze.getHeight());
 		this.setBackground(new Color(0, 0, 0, 0));
 	}
 	

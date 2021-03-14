@@ -3,26 +3,27 @@ import java.awt.*;
 
 public class ControlPanel extends JPanel {
 
-    private JLabel label = new JLabel("sdlkfj");
-
+    private JLabel timeLabel = null;
     private Timer timer = null;
 
     public ControlPanel(Main main, Maze maze, String text) {
         main.add(this);
 
-        this.setBounds(maze.SZW * maze.getWallLen(), 0,
-                100, maze.SZH * maze.getWallLen());
+        this.setBounds(maze.getWidth(), 0, 200, maze.getHeight());
         this.setBackground(Color.WHITE);
-
-        label.setHorizontalAlignment(JLabel.CENTER);
-        label.setVerticalAlignment(JLabel.TOP);
-
-        this.add(label);
     }
 
     /*** Timer section***/
 
     public void addTimer() {
+        this.timeLabel = new JLabel();
+
+        this.timeLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.timeLabel.setVerticalAlignment(JLabel.TOP);
+        this.timeLabel.setFont(new Font("Verdana",1,20));
+
+        this.add(timeLabel);
+
         this.timer = new Timer();
     }
 
@@ -45,8 +46,6 @@ public class ControlPanel extends JPanel {
             long secsMillis = secs * 1000;
 
             this.amountMillis = hoursMillis + minsMillis + secsMillis;
-
-            label.setText(this.getTimeString());
         }
 
         public void start() {
@@ -79,12 +78,12 @@ public class ControlPanel extends JPanel {
             return (int) this.getSecondsTotalLeft() % 60;
         }
 
-        public boolean timeIsUp() {
+        public boolean isUp() {
             return this.getMillisTotalLeft() <= 0;
         }
 
-        public String getTimeString() {
-            return String.format("%s : %s : %s", this.getHoursTotalLeft(),
+        public String getString() {
+            return String.format("Time: %s : %s : %s", this.getHoursTotalLeft(),
                     this.getMinutesTotalLeft() % 60,
                     this.getSecondsTotalLeft() % 60);
         }
@@ -92,10 +91,13 @@ public class ControlPanel extends JPanel {
         public void update() {
             if (this.isStarted) {
                 this.amountMillis = this.endTimeMillis - System.currentTimeMillis();
-                label.setText(this.getTimeString());
             } else {
                 System.out.println("You can't update the timer if it's not started.");
             }
+        }
+
+        public void draw() {
+            timeLabel.setText(this.getString());
         }
     }
 

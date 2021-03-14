@@ -26,6 +26,7 @@ public class Maze extends JPanel {
         /*** Init the JPanel ***/
         // add the JPanel object to the JFrame object.
         main.add(this);
+
         this.setBounds(0, 0, SZW * wall_len, SZH * wall_len);
         this.setBackground(Color.WHITE);
 
@@ -103,7 +104,7 @@ public class Maze extends JPanel {
         this.maze[this.xMaze][this.yMaze] &= ~48;
 
         // put all the unprocessed cells into the "todo" list.
-        this.putCellsIntoTodo();
+        this.putCellsInTodo();
     }
 
     public void updateMaze() {
@@ -135,7 +136,7 @@ public class Maze extends JPanel {
         // System.out.println("maze[x + dx[d]][y + dy[d]] = " + this.maze[this.x + this.dx[this.d]][this.y + this.dy[this.d]]); TODO
 
         // put all the unprocessed cells into the todo list.
-        this.putCellsIntoTodo();
+        this.putCellsInTodo();
 
         /*
         this.maze[1][1] &= ~1; // the beginning of the maze is at the left-top corner.
@@ -186,7 +187,7 @@ public class Maze extends JPanel {
         return Integer.parseInt(x_parts[0]);
     }
 
-    private void putCellsIntoTodo() {
+    private void putCellsInTodo() {
         // put all the unprocessed cells into the todo list.
         for (this.d = 0; this.d < 4; this.d++) {
             if ((this.maze[this.xMaze + this.dx[this.d]][this.yMaze + this.dy[this.d]] & 16) != 0) {

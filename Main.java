@@ -5,42 +5,44 @@ public class Main extends JFrame {
 	public boolean isActive = true;
 	private String title = "Test maze | %s : %s";
 
+	// create one maze.
+	private Maze maze = new Maze(this);
+
+	// create the Control Panel.
+	private ControlPanel controlPanel = new ControlPanel(this, maze, this.title);
+
+	// create one walker.
+	private Walker walker = new Walker(this, maze);
+
 	public Main() {
     	/*** Init the JFrame (window). ***/
         this.setTitle("test paint");
-        this.setSize(800, 800);
+        this.setSize(this.maze.getWidth() + this.controlPanel.getWidth(),
+					this.maze.getHeight() + this.controlPanel.getHeight());
 
         this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+		/*** Init the ControlPanel Timer. ***/
+		this.controlPanel.addTimer();
+		this.controlPanel.timer().set(0, 2, 0);
+		this.controlPanel.timer().draw();
     }
 
     public static void main(String[] args) {
     	// create the window.
     	Main main = new Main();
 
-    	// create one maze.
-    	Maze maze = new Maze(main);
-
-		// create the Control Panel.
-		ControlPanel controlPanel = new ControlPanel(main, maze, main.title);
-		controlPanel.addTimer();
-		controlPanel.timer().set(0, 2, 0);
-
-    	// create one walker.
-		Walker walker = new Walker(main, maze);
-
-
-
         // update the maze and redraw it on the panel.
         new Thread(new Runnable() {
             public void run() {
 				// animate the process of building the maze.
-                while(maze.getTodonum() > 0) {
+                while(main.maze.getTodonum() > 0) {
 					try {
 						// update the maze.
-						maze.updateMaze();
+						main.maze.updateMaze();
 						// redraw the maze.
-						maze.drawMaze();
+						main.maze.drawMaze();
 
 						Thread.sleep(10); // delay
 					} catch (InterruptedException e) {
@@ -49,26 +51,34 @@ public class Main extends JFrame {
                 }
 
                 // start the timer.
-                controlPanel.timer().start();
+                main.controlPanel.timer().start();
 
 				while(true) {
 					if (main.isActive) {
 						try {
 							// check if the time is out.
-							if (controlPanel.timer().timeIsUp()) {
+							if (main.controlPanel.timer().isUp()) {
 								JOptionPane.showMessageDialog(null, "Что-то пошло не так!","Ошибка!", JOptionPane.ERROR_MESSAGE);
-								maze.drawMaze();
+								// JOptionPane.showMessageDialog(null, "Ура! Вы не отсталый!","Победа!", JOptionPane.INFORMATION_MESSAGE);
+								// JOptionPane.showMessageDialog(null, "Ура! Вы нашли выход!","Победа!", JOptionPane.INFORMATION_MESSAGE);
+								main.maze.drawMaze();
+
+								// deactivate the game.
 								main.isActive = false;
 							}
 
-							controlPanel.timer().update();
+							// update the timer.
+							main.controlPanel.timer().update();
+							// redraw the timer.
+							main.controlPanel.timer().draw();
 
+							// update the timer value in the title of the window.
 							main.setTitle(String.format(main.title,
-									controlPanel.timer().getMinutes(),
-									controlPanel.timer().getSeconds()));
+									main.controlPanel.timer().getMinutes(),
+									main.controlPanel.timer().getSeconds()));
 
 							// redraw the walker.
-							walker.draw();
+							main.walker.draw();
 
 							// make a pause.
 							Thread.sleep(10); // delay

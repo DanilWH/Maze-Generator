@@ -37,19 +37,12 @@ class InputHandler implements KeyListener {
 				break;
 		}
 
+		// put the ball to a random spot if there is a collision between the walker and the ball.
 		if (x == this.maze.getXMaze() && y == this.maze.getYMaze()) {
 			this.maze.setXMaze(this.getRandom(1, this.maze.SZW - 2));
 			this.maze.setYMaze(this.getRandom(1, this.maze.SZH - 2));
 			this.maze.drawMaze();
 		}
-
-		if (x == this.maze.SZW - 2 && y == this.maze.SZH - 2) {
-			JOptionPane.showMessageDialog(null, "Что-то пошло не так!","Ошибка!", JOptionPane.ERROR_MESSAGE);
-			// JOptionPane.showMessageDialog(null, "Ура! Вы не отсталый!","Победа!", JOptionPane.INFORMATION_MESSAGE);
-			// JOptionPane.showMessageDialog(null, "Ура! Вы нашли выход!","Победа!", JOptionPane.INFORMATION_MESSAGE);
-			this.maze.drawMaze();
-		}
-
     }
 
     @Override
