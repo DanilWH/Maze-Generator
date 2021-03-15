@@ -28,13 +28,13 @@ class Walker extends JPanel {
 		// redraw the previous position of the walker with another color.
 		//gr2d.setColor(new Color(0, 100, 0));
 		gr2d.setColor(new Color(255, 91, 0));
-		gr2d.fillRect(this.xPosOld * maze.getWallLen() + 1, this.yPosOld * maze.getWallLen() + 1,
-				maze.getWallLen() - (int) maze.getStroke(), maze.getWallLen() - (int) maze.getStroke());
+		gr2d.fillRect(this.xPosOld * maze.getWallLen() + (int) this.maze.getStroke() / 2, this.yPosOld * maze.getWallLen() + (int) this.maze.getStroke() / 2,
+				maze.getWallLen() - (int) this.maze.getStroke(), maze.getWallLen() - (int) this.maze.getStroke());
 
 		// draw the walker at the new position.
 		//gr2d.setColor(Color.BLUE);
 		gr2d.setColor(new Color(58, 117, 196));
-		gr2d.fillRect(this.xPos * maze.getWallLen() + 1, this.yPos * maze.getWallLen() + 1,
+		gr2d.fillRect(this.xPos * maze.getWallLen() + (int) this.maze.getStroke() / 2, this.yPos * maze.getWallLen() + (int) this.maze.getStroke() / 2,
 					maze.getWallLen() - (int) maze.getStroke(), maze.getWallLen() - (int) maze.getStroke());
 
 		// reassign the old position with the new one.

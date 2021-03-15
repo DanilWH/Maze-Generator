@@ -20,7 +20,7 @@ public class Maze extends JPanel {
     private int xMaze, yMaze, n, d;
 
     private final int wall_len = 15;
-	private final float stroke = 2.0f;
+	private final float stroke = 2.0f; // even numbers only!
 
     public Maze(Main main) {
         /*** Init the JPanel ***/
@@ -65,14 +65,14 @@ public class Maze extends JPanel {
                     continue;
                 } else if (this.maze[x][y] == 47) {
                     gr2d.setPaint(Color.GREEN);
-                    gr2d.fillRect(x * this.wall_len + 1, y * this.wall_len + 1,
-                            this.wall_len - 1, this.wall_len - 1);
+                    gr2d.fillRect(x * this.wall_len + (int) this.stroke / 2, y * this.wall_len + (int) this.stroke / 2,
+                            this.wall_len - (int) this.stroke, this.wall_len - (int) this.stroke);
                     gr2d.setPaint(Color.BLACK);
                     continue;
                 }
                 // draw the red rect slider.
                 gr2d.setPaint(Color.RED);
-                gr2d.fillRect(this.getXMaze() * wall_len + 1, this.getYMaze() * this.wall_len + 1,
+                gr2d.fillRect(this.xMaze * this.wall_len + (int) this.stroke / 2, this.yMaze * this.wall_len + (int) this.stroke / 2,
                         this.wall_len - (int) this.stroke, this.wall_len - (int) this.stroke);
                 gr2d.setPaint(Color.BLACK);
             }
