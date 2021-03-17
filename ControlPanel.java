@@ -4,7 +4,10 @@ import java.awt.*;
 public class ControlPanel extends JPanel {
 
     private JLabel timeLabel = null;
+    private JLabel scoreLabel = null;
+
     private Timer timer = null;
+    private Score score = null;
 
     public ControlPanel(Main main, Maze maze, String text) {
         main.add(this);
@@ -29,6 +32,26 @@ public class ControlPanel extends JPanel {
 
     public Timer timer() {
         return this.timer;
+    }
+
+    /*** Score section. ***/
+
+    public void addScore() {
+        // initialize the Score label and add it to the JPanel.
+        this.scoreLabel = new JLabel();
+
+        this.scoreLabel.setHorizontalAlignment(JLabel.CENTER);
+        this.scoreLabel.setVerticalAlignment(JLabel.TOP);
+        this.scoreLabel.setFont(new Font("Verdana", 1, 20));
+
+        this.add(this.scoreLabel);
+
+        // create the actual Score object.
+        this.score = new Score();
+    }
+
+    public Score score() {
+        return this.score;
     }
 
 
@@ -98,6 +121,27 @@ public class ControlPanel extends JPanel {
 
         public void draw() {
             timeLabel.setText(this.getString());
+        }
+    }
+
+    public class Score {
+
+        private int scoreCount = 0;
+
+        public void scoreUp() {
+            this.scoreCount += 25;
+        }
+
+        public int getScore() {
+            return this.scoreCount;
+        }
+
+        public String getString() {
+            return String.format("Score: %s", this.scoreCount);
+        }
+
+        public void draw() {
+            scoreLabel.setText(this.getString());
         }
     }
 

@@ -3,13 +3,15 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 class InputHandler implements KeyListener {
-	
+
 	private Maze maze;
 	private Walker walker;
+	private ControlPanel controlPanel;
 
-	public InputHandler(Maze maze, Walker walker) {
+	public InputHandler(Maze maze, Walker walker, ControlPanel controlPanel) {
 		this.maze = maze;
 		this.walker = walker;
+		this.controlPanel = controlPanel;
 	}
 
     @Override
@@ -37,11 +39,16 @@ class InputHandler implements KeyListener {
 				break;
 		}
 
-		// put the ball to a random spot if there is a collision between the walker and the ball.
+		//  if there is a collision between the walker and the ball.
 		if (x == this.maze.getXMaze() && y == this.maze.getYMaze()) {
+			// put the ball to another random place in the maze.
 			this.maze.setXMaze(this.getRandom(1, this.maze.SZW - 2));
 			this.maze.setYMaze(this.getRandom(1, this.maze.SZH - 2));
 			this.maze.drawMaze();
+
+			// increase the number of score.
+			this.controlPanel.score().scoreUp();
+			this.controlPanel.score().draw();
 		}
     }
 

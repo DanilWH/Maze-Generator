@@ -10,11 +10,11 @@ class Walker extends JPanel {
 	private int xPosOld = xPos, yPosOld = yPos;
 	private Maze maze;
 	
-	public Walker(Main main, Maze maze) {
+	public Walker(Main main, Maze maze, ControlPanel controlPanel) {
 		this.maze = maze;
 		
 		main.add(this);
-		main.addKeyListener(new InputHandler(maze, this));
+		main.addKeyListener(new InputHandler(maze, this, controlPanel));
 
 		this.setBounds(0, 0, maze.getWidth(), maze.getHeight());
 		this.setBackground(new Color(0, 0, 0, 0));
@@ -61,6 +61,6 @@ class Walker extends JPanel {
 	public void setYPos(int yPos) {
 		this.yPos = yPos;
 	}
-	
-	
+
+
 }

@@ -12,7 +12,7 @@ public class Main extends JFrame {
 	private ControlPanel controlPanel = new ControlPanel(this, maze, this.title);
 
 	// create one walker.
-	private Walker walker = new Walker(this, maze);
+	private Walker walker = new Walker(this, maze, controlPanel);
 
 	public Main() {
     	/*** Init the JFrame (window). ***/
@@ -23,10 +23,15 @@ public class Main extends JFrame {
         this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		/*** Init the ControlPanel Timer. ***/
+		/*** Init the ControlPanel. ***/
+		// Timer.
 		this.controlPanel.addTimer();
 		this.controlPanel.timer().set(0, 2, 0);
 		this.controlPanel.timer().draw();
+
+		// Score.
+		this.controlPanel.addScore();
+		this.controlPanel.score().draw();
     }
 
     public static void main(String[] args) {
