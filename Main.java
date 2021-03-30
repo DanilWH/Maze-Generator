@@ -18,10 +18,11 @@ public class Main extends JFrame {
     	/*** Init the JFrame (window). ***/
         this.setTitle("test paint");
         this.setSize(this.maze.getWidth() + this.controlPanel.getWidth(),
-					this.maze.getHeight() + this.controlPanel.getHeight());
+					this.maze.getHeight() + 25);
 
         this.setVisible(true);
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setLocationRelativeTo(null);
 
 		/*** Init the ControlPanel. ***/
 		// Timer.
@@ -63,9 +64,9 @@ public class Main extends JFrame {
 						try {
 							// check if the time is out.
 							if (main.controlPanel.timer().isUp()) {
-								JOptionPane.showMessageDialog(null, "Что-то пошло не так!","Ошибка!", JOptionPane.ERROR_MESSAGE);
+								// JOptionPane.showMessageDialog(null, "Что-то пошло не так!","Ошибка!", JOptionPane.ERROR_MESSAGE);
 								// JOptionPane.showMessageDialog(null, "Ура! Вы не отсталый!","Победа!", JOptionPane.INFORMATION_MESSAGE);
-								// JOptionPane.showMessageDialog(null, "Ура! Вы нашли выход!","Победа!", JOptionPane.INFORMATION_MESSAGE);
+								JOptionPane.showMessageDialog(null, "Ваш счёт: " + main.controlPanel.score().getScore(),"Время вышло!", JOptionPane.INFORMATION_MESSAGE);
 								main.maze.drawMaze();
 
 								// deactivate the game.
